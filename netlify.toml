@@ -1,0 +1,10 @@
+[build]
+	base = "/"
+	command = "# no build command"
+	functions = "netlify/functions"
+	publish = "dist"
+
+
+
+[dev]
+	publish = "dist"
