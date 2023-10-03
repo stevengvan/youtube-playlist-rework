@@ -6,7 +6,6 @@
 }
 
 body {
-  padding: 0.5rem;
   box-sizing: border-box;
   height: 100svh;
   width: 100svw;
@@ -20,18 +19,20 @@ body {
   bottom: 0;
 }
 
+button {
+  height: 40px;
+  background-color: #4f74d4;
+  color: white;
+  padding: 0.5rem;
+  border-radius: 0.25rem 0.5rem;
+  border: none;
+  transition: 250ms;
+}
+
 button:hover {
+  background-color: #f69435;
+  transition: 250ms;
   cursor: pointer;
-}
-
-#app-title {
-  font-size: 50px;
-  visibility: visible;
-}
-
-#error-message {
-  margin-bottom: 0.5rem;
-  font-size: 17.5px;
 }
 
 #loading {
@@ -74,112 +75,41 @@ button:hover {
   }
 }
 
-#playlist-selector {
-  display: flex;
-  flex-direction: column;
-  place-content: center;
-  place-items: center;
-  height: 100%;
-  width: 100%;
-}
-
-#playlist-query {
-  font-size: 20px;
-  margin-bottom: 0.5rem;
-}
-
-#submit-btn {
-  padding: 0.5rem;
-}
-
-#error_message {
-  display: none;
-  word-wrap: break-word;
-}
-
-#main-content {
-  box-sizing: border-box;
-  width: 100%;
-  height: 100%;
-  overflow-y: hidden;
+#go-back {
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+  border-bottom-left-radius: 1rem;
+  border-bottom-right-radius: 1rem;
   position: absolute;
-  inset: 0;
-  visibility: hidden;
-}
-
-#video-container {
-  margin-bottom: 0.5rem;
-}
-
-#video-title {
-  min-height: 40px;
-  margin-bottom: 0.5rem;
-}
-
-#playlist-controller {
-  width: 100%;
-  margin-bottom: 0.5rem;
-}
-#playlist-controller > div {
-  display: flex;
-  justify-content: space-around;
-  width: 100%;
-  flex-wrap: wrap;
-}
-#playlist-controller > div:first-child {
-  margin-bottom: 0.5rem;
-}
-#playlist-controller > div > button {
-  padding: 0.5rem 1rem;
   box-sizing: border-box;
-}
-#playlist-controller > div > button:hover {
-  cursor: pointer;
-}
-
-#list {
-  height: 55%;
-  overflow-y: auto;
-}
-
-.listItem {
   display: flex;
+  justify-content: center;
+  align-items: center;
+  inset: 0;
+  height: 35px;
+  width: 100%;
 }
-.listItem:hover {
-  background-color: lightgrey;
-  transition-duration: 250ms;
-  cursor: pointer;
-}
-.listItem:not(:last-of-type) {
-  margin-bottom: 0.5rem;
-}
-.listItem > img {
-  width: 120px;
-  height: 90px;
-}
-
-.selectedListItem {
-  background-color: grey;
-}
-
-@media (min-width: 40rem) and (min-width: 750px) {
-  #main-content {
-    display: flex;
-  }
-
-  #video-title {
-    margin-bottom: 0;
-  }
-
-  #list {
-    height: 100%;
-    width: 100%;
-  }
+#go-back > span {
+  font-size: 50px;
 }
 
 @media only screen and (hover: none) and (pointer: coarse) {
   button {
     box-sizing: border-box;
     font-size: 15px;
+  }
+}
+
+@media (min-width: 40rem) and (min-width: 750px) {
+  #go-back {
+    border-bottom-left-radius: 0;
+    height: 35px;
+    width: 35px;
+  }
+  #go-back > span {
+    font-size: 30px;
+  }
+  #go-back:hover {
+    border-bottom-right-radius: 0.5rem;
   }
 }

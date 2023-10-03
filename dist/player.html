@@ -6,9 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>YT Re:Playlist</title>
     <script type="text/javascript" src="main.js"></script>
-    <script type="text/javascript" src="index.js"></script>
+    <script type="text/javascript" src="player.js"></script>
     <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="index.css">
+    <link rel="stylesheet" href="player.css">
     <link rel='manifest' href='./manifest.json'>
     <meta content="width=device-width, initial-scale=1" name="viewport" />
     <link rel="apple-touch-icon" sizes="180x180" href="icons/apple-touch-icon.png">
@@ -83,7 +83,6 @@
 </head>
 
 <body>
-
     <div id="loading">
         <div id="loading-box">
             <h1>Loading</h1>
@@ -91,21 +90,54 @@
         </div>
     </div>
 
-    <div id="menu-screen">
-        <h1 id="app-title">Youtube Playlist Player</h1>
+    <header>
+        <button id="go-back" onclick="history.back()"><span>&#8592;</span></button>
+        <h2 id="playlist-title"></h2>
+    </header>
 
-        <div id="menu-buttons">
-            <button onclick="oauthSignIn()">Select playlist from your account</button>
-            <h2>Or</h2>
-            <p id="error-message"></p>
-            <input id="search-bar" type="text" placeholder="Enter playlist URL or ID..." minlength="11" maxlength="95"
-                onkeydown="searchPlaylist(event)">
-            <button id="submit-btn" onclick="searchPlaylist(null, true)">Search</button>
-        </div>
+    <div id="main-content">
+        <section id="video-container">
+            <div id="player"></div>
+
+            <h1 id="video-title">Currently not playing anything</h1>
+
+            <div id="playlist-controller">
+                <button id="prev-video" onclick="gotoPrevNext('previous')">Previous</button>
+                <button id="goto-playing" onclick="gotoCurrentVideo()">Playing</button>
+                <button id="next-video" onclick="gotoPrevNext('next')">Next</button>
+                <button id="shuffle-list" onclick="shufflePlaylist()">Shuffle</button>
+                <button id="revert-list" onclick="revertPlaylist()">Revert</button>
+                <button id="goto-menu" onclick="gotoMenu()">Menu</button>
+            </div>
+
+        </section>
+
+        <div id="list"></div>
     </div>
-
-
 </body>
+
+<script src="https://www.youtube.com/player_api"></script>
+
+<script>
+    displayList();
+</script>
+
+<script>
+    window.onresize = window.onload = function () {
+        width = this.innerWidth;
+        height = this.innerHeight;
+        const video = document.getElementById("player");
+
+        if (width >= 750) {
+            video.height = height / 1.5;
+            video.width = width / 1.75;
+        } else {
+            video.height = height * .325;
+            video.width = width;
+        }
+    };
+</script>
+
 
 <script>
     if ("serviceWorker" in navigator) {

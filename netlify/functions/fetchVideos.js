@@ -1,4 +1,4 @@
-const apiPlatlistItems = "https://www.googleapis.com/youtube/v3/playlistItems?";
+const apiPlaylistItems = "https://www.googleapis.com/youtube/v3/playlistItems?";
 const axios = require("axios");
 
 exports.handler = async function (event, context) {
@@ -12,7 +12,7 @@ exports.handler = async function (event, context) {
   while (!next || next !== prevNext) {
     try {
       const response = await axios.get(
-        apiPlatlistItems +
+        apiPlaylistItems +
           new URLSearchParams({
             part: "contentDetails,snippet",
             playlistId: newPlaylist,
@@ -55,7 +55,8 @@ exports.handler = async function (event, context) {
       return {
         statusCode: 404,
         body: JSON.stringify({
-          videosList: [],
+          error: error,
+          playlists: [],
         }),
       };
     }

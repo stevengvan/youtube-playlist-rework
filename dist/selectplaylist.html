@@ -6,9 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>YT Re:Playlist</title>
     <script type="text/javascript" src="main.js"></script>
-    <script type="text/javascript" src="index.js"></script>
+    <script type="text/javascript" src="selectplaylist.js"></script>
     <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="index.css">
+    <link rel="stylesheet" href="selectplaylist.css">
     <link rel='manifest' href='./manifest.json'>
     <meta content="width=device-width, initial-scale=1" name="viewport" />
     <link rel="apple-touch-icon" sizes="180x180" href="icons/apple-touch-icon.png">
@@ -83,6 +83,7 @@
 </head>
 
 <body>
+    <h1 id="app-title">Youtube Playlist Player</h1>
 
     <div id="loading">
         <div id="loading-box">
@@ -91,21 +92,18 @@
         </div>
     </div>
 
-    <div id="menu-screen">
-        <h1 id="app-title">Youtube Playlist Player</h1>
+    <button id="go-back" onclick="gotoMenu()"><span>&#8592;</span></button>
 
-        <div id="menu-buttons">
-            <button onclick="oauthSignIn()">Select playlist from your account</button>
-            <h2>Or</h2>
-            <p id="error-message"></p>
-            <input id="search-bar" type="text" placeholder="Enter playlist URL or ID..." minlength="11" maxlength="95"
-                onkeydown="searchPlaylist(event)">
-            <button id="submit-btn" onclick="searchPlaylist(null, true)">Search</button>
-        </div>
+    <h3 style="margin-bottom: 1.5rem;">Select playlist &#40;only public and unlisted playlists can be selected&#41;</h3>
+    <h5 id="error-message"></h5>
+
+    <div id="playlists-list">
     </div>
-
-
 </body>
+
+<script>
+    fetchPlaylists().then(_ => { displayPlaylists() });
+</script>
 
 <script>
     if ("serviceWorker" in navigator) {
