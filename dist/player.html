@@ -92,14 +92,15 @@
 
     <header>
         <button id="go-back" onclick="history.back()"><span>&#8592;</span></button>
-        <h2 id="playlist-title"></h2>
     </header>
 
     <div id="main-content">
         <section id="video-container">
             <div id="player"></div>
 
-            <h1 id="video-title">Currently not playing anything</h1>
+            <div id="scroll-container">
+                <h1 id="video-title">Currently not playing anything</h1>
+            </div>
 
             <div id="playlist-controller">
                 <button id="prev-video" onclick="gotoPrevNext('previous')">Previous</button>
@@ -122,7 +123,7 @@
     displayList();
 </script>
 
-<script>
+<!-- <script>
     window.onresize = window.onload = function () {
         width = this.innerWidth;
         height = this.innerHeight;
@@ -136,7 +137,7 @@
             video.width = width;
         }
     };
-</script>
+</script> -->
 
 
 <script>

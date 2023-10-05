@@ -80,7 +80,6 @@ const searchPlaylist = async (event, submit = false, id = "", title = "") => {
           document.getElementById("search-bar").value = "";
         }
         localStorage.clear();
-        localStorage.setItem("playlistTitle", title);
         localStorage.setItem("videosList", JSON.stringify(videosList));
         localStorage.setItem("originalList", JSON.stringify(originalList));
         localStorage.setItem("total", total);

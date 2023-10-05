@@ -41,8 +41,6 @@ function onErrorState(event) {
 // Creates playlist display based on playlist order
 function displayList() {
   // retrieve fetched playlist from previous page
-  document.getElementById("playlist-title").textContent =
-    localStorage.getItem("playlistTitle");
   videosList = JSON.parse(localStorage.getItem("videosList"));
   originalList = JSON.parse(localStorage.getItem("originalList"));
   total = localStorage.getItem("total");
