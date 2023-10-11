@@ -4,6 +4,21 @@ var videosList = {};
 var randomizedList = [];
 var originalList = [];
 var currentVideo = "";
+displayList();
+if (
+  localStorage.getItem("accessToken") !== null &&
+  localStorage.getItem("accessToken").length > 0
+) {
+  var signOutBtn = document.createElement("button");
+  signOutBtn.textContent = "Sign Out";
+  signOutBtn.id = "sign-out";
+  signOutBtn.tabIndex = 0;
+  signOutBtn.alt = "sign out of account";
+  signOutBtn.onclick = function () {
+    signOut();
+  };
+  document.getElementById("header-right").append(signOutBtn);
+}
 
 // Create Youtube player
 var player;
@@ -56,16 +71,25 @@ function displayList() {
   // add each video from playlist into playlist display as playlist items
   for (let index = 0; index < currentPlaylist.length; ++index) {
     // create new playlist item
-    let listItem = document.createElement("div");
+    let listItem = document.createElement("button");
     listItem.classList.add("listItem");
+    if (localStorage.getItem("isDarkMode") === "true") {
+      listItem.classList.add("dark-mode");
+    }
+    listItem.tabIndex = 0;
 
     // grab Youtube video ID
     let video = videosList[currentPlaylist[index]];
     listItem.id = video.id;
 
-    // add clickable element to change videos from display
+    // add clickable and keyboard interactive elements to change videos from display
     listItem.onclick = function () {
       changeVideo(video.id, index);
+    };
+    listItem.onkeydown = function (event) {
+      if (event.key === "Enter") {
+        changeVideo(video.id, index);
+      }
     };
 
     // add video title and thumbnail to playlist item
@@ -73,6 +97,7 @@ function displayList() {
     title.innerText = video.title;
     let image = document.createElement("img");
     image.src = video.thumbnail.url;
+    image.alt = `thumbnail of ${video.title}`;
     listItem.appendChild(image);
     listItem.appendChild(title);
 

@@ -5,8 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>YT Re:Playlist</title>
-    <script type="text/javascript" src="main.js"></script>
-    <script type="text/javascript" src="index.js"></script>
+    <script type="text/javascript" async defer src="main.js"></script>
+    <script type="text/javascript" async defer src="index.js"></script>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="index.css">
     <link rel='manifest' href='./manifest.json'>
@@ -83,13 +83,12 @@
 </head>
 
 <body>
-
-    <div id="loading">
-        <div id="loading-box">
-            <h1>Loading</h1>
-            <div id="loader-icon"></div>
+    <header>
+        <div id="header-right">
+            <button id="toggle-dark" tabindex="0" alt="toggle dark mode" onclick="toggleDarkMode()"><img id="icon"
+                    alt="dark mode icon" src="icons/dark-theme-svgrepo-com.svg"></button>
         </div>
-    </div>
+    </header>
 
     <div id="menu-screen">
         <h1 id="app-title">Youtube Playlist Player</h1>
@@ -98,14 +97,22 @@
             <button onclick="oauthSignIn()">Select playlist from your account</button>
             <h2>Or</h2>
             <p id="error-message"></p>
-            <input id="search-bar" type="text" placeholder="Enter playlist URL or ID..." minlength="11" maxlength="95"
-                onkeydown="searchPlaylist(event)">
+            <label>
+                Search:
+                <input id="search-bar" type="text" aria-label="playlist input" placeholder="Enter playlist URL or ID..."
+                    minlength="11" maxlength="95" onkeydown="searchPlaylist(event)">
+            </label>
             <button id="submit-btn" onclick="searchPlaylist(null, true)">Search</button>
         </div>
     </div>
-
-
 </body>
+
+<script>
+    if (localStorage.getItem("isDarkMode") == "true") {
+        document.body.classList.add("dark-mode");
+        document.getElementById("toggle-dark").classList.add("dark-mode");
+    }
+</script>
 
 <script>
     if ("serviceWorker" in navigator) {

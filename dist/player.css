@@ -1,25 +1,3 @@
-header {
-  height: 5%;
-}
-
-#go-back {
-  border-top-left-radius: 0;
-  border-top-right-radius: 0;
-  border-bottom-left-radius: 1rem;
-  border-bottom-right-radius: 1rem;
-  position: absolute;
-  box-sizing: border-box;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  inset: 0;
-  height: 35px;
-  width: 100%;
-}
-#go-back > span {
-  font-size: 50px;
-}
-
 #main-content {
   box-sizing: border-box;
   width: 100%;
@@ -106,12 +84,22 @@ header {
 }
 
 .listItem {
+  font-size: 16px;
+  color: black;
+  width: 100%;
+  background-color: transparent;
+  border: none;
+  border-radius: 0;
+  height: auto;
   display: flex;
 }
 .listItem:hover {
   background-color: lightgrey;
   transition-duration: 250ms;
   cursor: pointer;
+}
+.listItem:focus {
+  background-color: lightgrey;
 }
 .listItem:not(:last-of-type) {
   margin-bottom: 0.5rem;

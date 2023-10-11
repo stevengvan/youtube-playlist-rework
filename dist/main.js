@@ -1,14 +1,67 @@
-var newPlaylist = "";
+function signOut() {
+  // Google's OAuth 2.0 endpoint for revoking access tokens.
+  var revokeTokenEndpoint = "https://oauth2.googleapis.com/revoke";
+
+  // Create <form> element to use to POST data to the OAuth 2.0 endpoint.
+  var form = document.createElement("form");
+  form.setAttribute("method", "post");
+  form.setAttribute("action", revokeTokenEndpoint);
+
+  // Add access token to the form so it is set as value of 'token' parameter.
+  // This corresponds to the sample curl request, where the URL is:
+  //      https://oauth2.googleapis.com/revoke?token={token}
+  var tokenField = document.createElement("input");
+  tokenField.setAttribute("type", "hidden");
+  tokenField.setAttribute("name", "token");
+  tokenField.setAttribute("value", localStorage.getItem("accessToken"));
+  form.appendChild(tokenField);
+
+  // Add form to page and submit it to actually revoke the token.
+  document.body.appendChild(form);
+  form.submit();
+  localStorage.setItem("accessToken", "");
+  location.href = "index.html";
+}
+
+function toggleDarkMode() {
+  if (localStorage.getItem("isDarkMode") === null) {
+    localStorage.setItem("isDarkMode", false);
+  }
+
+  if (localStorage.getItem("isDarkMode") == "false") {
+    localStorage.setItem("isDarkMode", "true");
+    document.getElementById("toggle-dark").classList.add("dark-mode");
+    document.getElementById("toggle-dark").blur();
+    document.body.classList.add("dark-mode");
+  } else {
+    localStorage.setItem("isDarkMode", "false");
+    document.getElementById("toggle-dark").blur();
+    var darkModeElems = document.getElementsByClassName("dark-mode");
+    for (let i = darkModeElems.length - 1; i >= 0; --i) {
+      darkModeElems[i].classList.remove("dark-mode");
+    }
+  }
+}
 
 function toggleLoading(toggle) {
-  const loading = document.getElementById("loading");
   switch (toggle) {
     case 0: {
-      loading.style.visibility = "hidden";
+      document.getElementById("loading").remove();
       break;
     }
     case 1: {
-      loading.style.visibility = "visible";
+      var loadScreen = document.createElement("div");
+      loadScreen.id = "loading";
+      var loadingBox = document.createElement("div");
+      loadingBox.id = "loading-box";
+      var header = document.createElement("h1");
+      header.textContent = "Loading";
+      loadingBox.append(header);
+      var loader = document.createElement("div");
+      loader.id = "loader-icon";
+      loadingBox.append(loader);
+      loadScreen.append(loadingBox);
+      document.body.append(loadScreen);
       break;
     }
   }
@@ -16,8 +69,19 @@ function toggleLoading(toggle) {
 
 // Goes back to options to either select playlist or search a playlist
 function gotoMenu() {
-  location.href = "index.html";
+  const currentURL = window.location.href;
+  console.log(document.referrer.length);
+  if (currentURL.includes("selectplaylist") || document.referrer.length === 0) {
+    location.href = "index.html";
+  } else if (
+    document.referrer.includes("selectplaylist") ||
+    document.referrer.includes("index")
+  ) {
+    history.back();
+  }
 }
+
+var newPlaylist = "";
 
 // Retrieves all videos in playlist
 const fetchVideos = async () => {
@@ -42,7 +106,7 @@ const fetchVideos = async () => {
 
 // Uses given URL to search for existing playlist
 const searchPlaylist = async (event, submit = false, id = "", title = "") => {
-  if ((event && event.keyCode == 13) || submit == true) {
+  if ((event && event.key == "Enter") || submit == true) {
     if (id.length == 0) {
       document.getElementById("search-bar").blur();
     }
@@ -79,7 +143,6 @@ const searchPlaylist = async (event, submit = false, id = "", title = "") => {
         if (id.length === 0) {
           document.getElementById("search-bar").value = "";
         }
-        localStorage.clear();
         localStorage.setItem("videosList", JSON.stringify(videosList));
         localStorage.setItem("originalList", JSON.stringify(originalList));
         localStorage.setItem("total", total);

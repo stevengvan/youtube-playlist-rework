@@ -5,8 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>YT Re:Playlist</title>
-    <script type="text/javascript" src="main.js"></script>
-    <script type="text/javascript" src="player.js"></script>
+    <script type="text/javascript" async defer src="main.js"></script>
+    <script type="text/javascript" async defer src="player.js"></script>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="player.css">
     <link rel='manifest' href='./manifest.json'>
@@ -83,15 +83,13 @@
 </head>
 
 <body>
-    <div id="loading">
-        <div id="loading-box">
-            <h1>Loading</h1>
-            <div id="loader-icon"></div>
-        </div>
-    </div>
-
     <header>
-        <button id="go-back" onclick="history.back()"><span>&#8592;</span></button>
+        <button id="go-back" aria-label="go back button" onclick="gotoMenu()"><span>&#8592;</span></button>
+
+        <div id="header-right">
+            <button id="toggle-dark" tabindex="0" alt="toggle dark mode" onclick="toggleDarkMode()"><img id="icon"
+                    alt="dark mode icon" src="icons/dark-theme-svgrepo-com.svg"></button>
+        </div>
     </header>
 
     <div id="main-content">
@@ -117,28 +115,14 @@
     </div>
 </body>
 
-<script src="https://www.youtube.com/player_api"></script>
-
 <script>
-    displayList();
+    if (localStorage.getItem("isDarkMode") == "true") {
+        document.body.classList.add("dark-mode");
+        document.getElementById("toggle-dark").classList.add("dark-mode");
+    }
 </script>
 
-<!-- <script>
-    window.onresize = window.onload = function () {
-        width = this.innerWidth;
-        height = this.innerHeight;
-        const video = document.getElementById("player");
-
-        if (width >= 750) {
-            video.height = height / 1.5;
-            video.width = width / 1.75;
-        } else {
-            video.height = height * .325;
-            video.width = width;
-        }
-    };
-</script> -->
-
+<script src="https://www.youtube.com/player_api"></script>
 
 <script>
     if ("serviceWorker" in navigator) {
