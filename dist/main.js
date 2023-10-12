@@ -20,7 +20,7 @@ function signOut() {
   document.body.appendChild(form);
   form.submit();
   localStorage.setItem("accessToken", "");
-  location.href = "index.html";
+  // location.href = "index.html";
 }
 
 function toggleDarkMode() {
