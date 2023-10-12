@@ -1,4 +1,5 @@
 function signOut() {
+  document.getElementById("sign-out").blur();
   // Google's OAuth 2.0 endpoint for revoking access tokens.
   var revokeTokenEndpoint = "https://oauth2.googleapis.com/revoke";
 
@@ -70,7 +71,7 @@ function toggleLoading(toggle) {
 // Goes back to options to either select playlist or search a playlist
 function gotoMenu() {
   const currentURL = window.location.href;
-  console.log(document.referrer.length);
+  document.getElementById("go-back").blur();
   if (currentURL.includes("selectplaylist") || document.referrer.length === 0) {
     location.href = "index.html";
   } else if (
