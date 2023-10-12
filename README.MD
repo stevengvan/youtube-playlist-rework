@@ -4,7 +4,7 @@ This is an app that allows users to stream any playlist they want. It is a Progr
 
 ## Demo
 
-The website can be found here: [https://yt-re-playlist.netlify.app](yt-re-playlist.netlify.app)
+The website can be found here: [https://yt-re-playlist.netlify.app](https://yt-re-playlist.netlify.app)
 
 ## Local Testing
 
