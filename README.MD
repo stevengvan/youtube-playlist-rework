@@ -4,13 +4,13 @@ This is an app that allows users to stream any playlist they want. It is a Progr
 
 ## Demo
 
-The website can be found here: [yt-re-playlist.netlify.app](yt-re-playlist.netlify.app)
+The website can be found here: [https://yt-re-playlist.netlify.app](https://yt-re-playlist.netlify.app)
 
 ## Local Testing
 
 To test locally, the following items must be completed beforehand:
 
-- Create a Google Cloud account: [Sign up from here](cloud.google.com/?utm_source=google&utm_medium=cpc&utm_campaign=na-US-all-en-dr-bkws-all-all-trial-e-dr-1605212&utm_content=text-ad-none-any-DEV_c-CRE_665665924735-ADGP_Hybrid+%7C+BKWS+-+MIX+%7C+Txt_Google+Cloud+General-KWID_43700077212109166-kwd-173795742258&utm_term=KW_google+cloud+sign+up-ST_google+cloud+sign+up&gclid=Cj0KCQjwj5mpBhDJARIsAOVjBdrNW62_53Btpkt5A7iaclFu4Mo5H6-FK7RMfgm8LOh4my7TSW45Jk0aArcvEALw_wcB&gclsrc=aw.ds&hl=en)
+- Create a Google Cloud account: [Sign up from here](https://cloud.google.com/?utm_source=google&utm_medium=cpc&utm_campaign=na-US-all-en-dr-bkws-all-all-trial-e-dr-1605212&utm_content=text-ad-none-any-DEV_c-CRE_665665924735-ADGP_Hybrid+%7C+BKWS+-+MIX+%7C+Txt_Google+Cloud+General-KWID_43700077212109166-kwd-173795742258&utm_term=KW_google+cloud+sign+up-ST_google+cloud+sign+up&gclid=Cj0KCQjwj5mpBhDJARIsAOVjBdrNW62_53Btpkt5A7iaclFu4Mo5H6-FK7RMfgm8LOh4my7TSW45Jk0aArcvEALw_wcB&gclsrc=aw.ds&hl=en)
 
 - Create an API key to use Youtube player API: [How to setup API keys](https://support.google.com/googleapi/answer/6158862?hl=en)
 
