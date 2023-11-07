@@ -108,6 +108,9 @@
   width: 120px;
   height: 90px;
 }
+.isDragging {
+  background-color: rgb(0, 132, 255) !important;
+}
 
 .selectedListItem {
   background-color: grey;

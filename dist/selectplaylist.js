@@ -28,10 +28,15 @@ const fetchPlaylists = async () => {
   );
   const data = await response.json();
   playlists = [...data.playlists];
+
+  // localStorage.setItem("playlists", JSON.stringify(data.playlists));
 };
 
 function displayPlaylists() {
   const list = document.getElementById("playlists-list");
+  // if (localStorage.getItem("playlists") !== null) {
+  //   playlists = [...JSON.parse(localStorage.getItem("playlists"))];
+  // }
 
   for (let i in playlists) {
     let container = document.createElement("button");

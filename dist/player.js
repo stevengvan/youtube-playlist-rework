@@ -4,6 +4,7 @@ var videosList = {};
 var randomizedList = [];
 var originalList = [];
 var currentVideo = "";
+var draggables = null;
 displayList();
 if (
   localStorage.getItem("accessToken") !== null &&
@@ -77,6 +78,7 @@ function displayList() {
       listItem.classList.add("dark-mode");
     }
     listItem.tabIndex = 0;
+    listItem.draggable = true;
 
     // grab Youtube video ID
     let video = videosList[currentPlaylist[index]];
@@ -104,6 +106,7 @@ function displayList() {
     // add playlist item to playlist display
     list.appendChild(listItem);
   }
+  draggables = [...document.querySelectorAll(".listItem")];
 }
 
 // Changes title of video being played
@@ -230,3 +233,52 @@ function revertPlaylist() {
   changeVideo(videosList[originalList[0]].id, 0);
   document.getElementById("list").scroll(0, 0);
 }
+
+/////////////
+var oldSpot = null;
+draggables.forEach((listItem) => {
+  listItem.addEventListener("dragstart", () => {
+    listItem.classList.add("isDragging");
+    oldSpot = draggables.findIndex((element) => element.id === listItem.id);
+  });
+  listItem.addEventListener("dragend", () => {
+    listItem.classList.remove("isDragging");
+    draggables = [...document.querySelectorAll(".listItem")];
+    newSpot = draggables.findIndex((element) => element.id === listItem.id);
+    currentIndex = newSpot;
+    if (randomizedList.length === 0) {
+      randomizedList = [...originalList];
+    }
+    var element = randomizedList.splice(oldSpot, 1);
+    randomizedList.splice(newSpot, 0, element[0]);
+  });
+});
+
+const list = document.getElementById("list");
+list.addEventListener("dragover", (e) => {
+  e.preventDefault();
+  const bottomItem = insertAboveItem(list, e.clientY);
+  const currItem = document.querySelector(".isDragging");
+  if (!bottomItem) {
+    list.appendChild(currItem);
+  } else {
+    list.insertBefore(currItem, bottomItem);
+  }
+});
+
+const insertAboveItem = (list, mouseY) => {
+  const others = [...list.querySelectorAll(".listItem:not(.isDragging)")];
+
+  return others.reduce(
+    (closest, child) => {
+      const box = child.getBoundingClientRect();
+      const offset = mouseY - box.top - box.height / 2.65;
+      if (offset < 0 && offset > closest.offset) {
+        return { offset: offset, element: child };
+      } else {
+        return closest;
+      }
+    },
+    { offset: Number.NEGATIVE_INFINITY }
+  ).element;
+};
