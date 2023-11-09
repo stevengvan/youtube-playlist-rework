@@ -97,10 +97,6 @@ const fetchVideos = async () => {
 
   videosList = { ...data.videosList };
   total = Object.keys(data.videosList).length;
-  originalList = Array.from(
-    { length: Object.keys(data.videosList).length },
-    (_, i) => i + 1
-  );
 
   return 200;
 };
@@ -145,7 +141,6 @@ const searchPlaylist = async (event, submit = false, id = "", title = "") => {
           document.getElementById("search-bar").value = "";
         }
         localStorage.setItem("videosList", JSON.stringify(videosList));
-        localStorage.setItem("originalList", JSON.stringify(originalList));
         localStorage.setItem("total", total);
         window.location.href = "player.html";
       } else if (statusCode == 404) {

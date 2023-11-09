@@ -1,8 +1,7 @@
-var total = 0;
+var total = localStorage.getItem("total");
 var currentIndex = -1;
-var videosList = {};
-var randomizedList = [];
-var originalList = [];
+var videosList = JSON.parse(localStorage.getItem("videosList"));
+var videosOrder = Array.from({ length: total }, (_, i) => i + 1);
 var currentVideo = "";
 var draggables = null;
 displayList();
@@ -56,21 +55,12 @@ function onErrorState(event) {
 
 // Creates playlist display based on playlist order
 function displayList() {
-  // retrieve fetched playlist from previous page
-  videosList = JSON.parse(localStorage.getItem("videosList"));
-  originalList = JSON.parse(localStorage.getItem("originalList"));
-  total = localStorage.getItem("total");
-
   // wipe old playlist display
   const list = document.getElementById("list");
   list.innerHTML = "";
 
-  // determine if playlist is shuffled or not
-  let currentPlaylist =
-    randomizedList.length > 0 ? randomizedList : originalList;
-
   // add each video from playlist into playlist display as playlist items
-  for (let index = 0; index < currentPlaylist.length; ++index) {
+  for (let index = 0; index < videosOrder.length; ++index) {
     // create new playlist item
     let listItem = document.createElement("button");
     listItem.classList.add("listItem");
@@ -81,7 +71,7 @@ function displayList() {
     listItem.draggable = true;
 
     // grab Youtube video ID
-    let video = videosList[currentPlaylist[index]];
+    let video = videosList[videosOrder[index]];
     listItem.id = video.id;
 
     // add clickable and keyboard interactive elements to change videos from display
@@ -107,14 +97,31 @@ function displayList() {
     list.appendChild(listItem);
   }
   draggables = [...document.querySelectorAll(".listItem")];
+  var oldSpot = null;
+  draggables.forEach((listItem) => {
+    listItem.addEventListener("dragstart", () => {
+      listItem.classList.add("isDragging");
+      oldSpot = draggables.findIndex((element) => element.id === listItem.id);
+    });
+    listItem.addEventListener("dragend", () => {
+      listItem.classList.remove("isDragging");
+      draggables = [...document.querySelectorAll(".listItem")];
+      newSpot = draggables.findIndex((element) => element.id === listItem.id);
+
+      if (oldSpot === currentIndex) {
+        currentIndex = newSpot;
+      }
+
+      var element = videosOrder.splice(oldSpot, 1);
+      videosOrder.splice(newSpot, 0, element[0]);
+    });
+  });
 }
 
 // Changes title of video being played
 function changeTitle() {
-  let currentPlaylist =
-    randomizedList.length > 0 ? randomizedList : originalList;
   const title = document.getElementById("video-title");
-  title.innerHTML = videosList[currentPlaylist[currentIndex]].title;
+  title.innerHTML = videosList[videosOrder[currentIndex]].title;
 }
 
 // Play new video based on where the video in playlist is
@@ -140,13 +147,9 @@ function changeVideo(videoId, index) {
 
 // Queue to next video
 function queueVideo() {
-  // determine if using shuffled playlist or not
-  let currentPlaylist =
-    randomizedList.length > 0 ? randomizedList : originalList;
-
   // goto next video queued in playlist
   if (currentIndex + 1 < total) {
-    const nextSong = videosList[currentPlaylist[currentIndex + 1]];
+    const nextSong = videosList[videosOrder[currentIndex + 1]];
     changeVideo(nextSong.id, currentIndex + 1);
   }
   return;
@@ -169,9 +172,6 @@ function gotoPrevNext(option) {
     oldVideo.classList.remove("selectedListItem");
   }
 
-  const currentPlaylist =
-    randomizedList.length > 0 ? randomizedList : originalList;
-
   switch (option) {
     case "previous":
       currentIndex -= 1;
@@ -180,7 +180,7 @@ function gotoPrevNext(option) {
       currentIndex += 1;
       break;
   }
-  currentVideo = videosList[currentPlaylist[currentIndex]].id;
+  currentVideo = videosList[videosOrder[currentIndex]].id;
 
   // scroll to new video on playlist
   const list = document.getElementById("list");
@@ -205,55 +205,35 @@ function gotoCurrentVideo() {
 
 // Randomizes order of playlist
 function shufflePlaylist() {
-  var sourceList = [...originalList];
   var newList = [];
 
   // start randomizing duplicated playlist order
-  while (sourceList.length > 0) {
-    let videoIndex = Math.floor(Math.random() * sourceList.length);
-    let video = sourceList.splice(videoIndex, 1)[0];
+  while (videosOrder.length > 0) {
+    let videoIndex = Math.floor(Math.random() * videosOrder.length);
+    let video = videosOrder.splice(videoIndex, 1)[0];
     newList.push(video);
   }
 
   // save and update playlist display
-  randomizedList = newList;
+  videosOrder = newList;
   currentIndex = -1;
   displayList();
 
   // queue the first video of new playlist order
-  changeVideo(videosList[randomizedList[0]].id, 0);
+  changeVideo(videosList[videosOrder[0]].id, 0);
   document.getElementById("list").scroll(0, 0);
 }
 
 // Switches to original playlist order
 function revertPlaylist() {
-  randomizedList = [];
+  videosOrder = Array.from({ length: total }, (_, i) => i + 1);
   currentIndex = -1;
   displayList();
-  changeVideo(videosList[originalList[0]].id, 0);
+  changeVideo(videosList[videosOrder[0]].id, 0);
   document.getElementById("list").scroll(0, 0);
 }
 
 /////////////
-var oldSpot = null;
-draggables.forEach((listItem) => {
-  listItem.addEventListener("dragstart", () => {
-    listItem.classList.add("isDragging");
-    oldSpot = draggables.findIndex((element) => element.id === listItem.id);
-  });
-  listItem.addEventListener("dragend", () => {
-    listItem.classList.remove("isDragging");
-    draggables = [...document.querySelectorAll(".listItem")];
-    newSpot = draggables.findIndex((element) => element.id === listItem.id);
-    currentIndex = newSpot;
-    if (randomizedList.length === 0) {
-      randomizedList = [...originalList];
-    }
-    var element = randomizedList.splice(oldSpot, 1);
-    randomizedList.splice(newSpot, 0, element[0]);
-  });
-});
-
 const list = document.getElementById("list");
 list.addEventListener("dragover", (e) => {
   e.preventDefault();
@@ -272,7 +252,7 @@ const insertAboveItem = (list, mouseY) => {
   return others.reduce(
     (closest, child) => {
       const box = child.getBoundingClientRect();
-      const offset = mouseY - box.top - box.height / 2.65;
+      const offset = mouseY - box.top - box.height / 2.6;
       if (offset < 0 && offset > closest.offset) {
         return { offset: offset, element: child };
       } else {
